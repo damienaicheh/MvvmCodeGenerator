@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <!--This file has been generated with MvvmCodeGenerator, do not modify it.-->
+  <ItemGroup>
+    <Compile Update="ViewModel/RootViewModel.*.g.cs">
+      <DependentUpon>RootViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Update="ViewModel/HomeViewModel.*.g.cs">
+      <DependentUpon>HomeViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Update="ViewModel/DashboardViewModel.*.g.cs">
+      <DependentUpon>DashboardViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Update="ViewModel/Items/SwitchItemViewModel.*.g.cs">
+      <DependentUpon>SwitchItemViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Update="ViewModel/Items/InputItemViewModel.*.g.cs">
+      <DependentUpon>InputItemViewModel.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Resources>
+    <Generator Value="freshmvvm" />
+    <ViewModels Namespace="Xamarin.Sample" DestinationFolder="ViewModel">
+        <ViewModel Key="Root">
+          <Property Name="IsNew" Type="bool" Description="A test" />
+        </ViewModel>
+        
+        <ViewModel Key="Home" Base="Root">
+          <Property Name="Planning" Type="string" Description="The planning." />
+        </ViewModel>
+
+        <ViewModel Key="Dashboard">
+          <Property Name="Title" Type="string" Description="Gets or sets the title." />
+          <Property Name="Number" Type="int" Description="Gets or sets the total number." />
+          <Property Name="Degrees" Type="float" Description="Gets or sets the degrees." />
+          <Property Name="UnKnown" Type="object" Description="Gets or sets the unknown object." />
+          <Property Name="MyDate" Type="DateTime" Description="Gets or sets the date and hour." />
+          <Property Name="MyTimeOffset" Type="DateTimeOffset" Description="Gets or sets the date and hour offset." />
+          <Property Name="MyTimeSpan" Type="TimeSpan" Description="Gets or sets the time span." />
+          <Property Name="JobControlFilesEnabled" Type="bool" Description="Gets or sets if check files can be viewed or not" />
+          <Command Name="JobActivation" Description="Gets or sets the command to manager job actions such as day (de)activation and breaks" />
+          <Command Name="ConsultControlFiles" Parameter="int" Description="Gets or sets the command to consult control files" />
+          <Command Name="Files" Parameter="bool" CanExecute="true" Description="Gets or sets the files"/>
+          <AsyncCommand Name="ConsultFiles" Description="Gets or sets the command to consult control files" />
+          <AsyncCommand Name="Consult" Parameter="string" Description="Gets or sets the command to consult control files" />
+          <AsyncCommand Name="Consultation" Parameter="string" CanExecute="true" Description="Gets or sets the command for the consultation" />
+        </ViewModel>
+        
+    </ViewModels>
+    
+    <ViewModels Namespace="Xamarin.Sample.Items" DestinationFolder="ViewModel/Items">
+        <ItemViewModel Key="Switch">
+          <Property Name="Title" Type="string" Description="Gets or sets the title." />
+          <Property Name="IsEnabled" Type="bool" Description="Gets or sets the is enable toggle." />
+          <AsyncCommand Name="Activate" Description="Gets or sets the activate command of the switch" />
+        </ItemViewModel>
+        
+        <ItemViewModel Key="Input">
+          <Property Name="Message" Type="string" Description="Gets or sets the message." />
+          <Property Name="AllMessages" Type="list string" Description="Gets or sets all messages." />
+          <Property Name="MyHouse" Type="Xamarin.Sample.Models.House" Description="Gets or sets my houses." />
+          <Property Name="AllHouses" Type="list Xamarin.Sample.Models.House" Description="Gets or sets all houses." />
+          <AsyncCommand Name="Send" Description="Gets or sets the send command of the input" />
+        </ItemViewModel>
+    </ViewModels>
+</Resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+        <!-- The identifier that must be unique within the hosting gallery -->
+        <id>MvvmCodeGenerator</id>
+
+        <!-- The package version number that is used when resolving dependencies -->
+        <version>0.0.27-beta</version>
+
+        <!-- Authors contain text that appears directly on the gallery -->
+        <authors>Damien Aicheh</authors>
+
+        <!-- 
+            Owners are typically nuget.org identities that allow gallery
+            users to easily find other packages by the same owners.  
+        -->
+        <owners>Damien Aicheh</owners>
+        
+         <!-- Project URL provides a link for the gallery -->
+        <projectUrl>https://github.com/damienaicheh/MvvmCodeGenerator</projectUrl>
+
+         <!-- License information is displayed on the gallery -->
+        <license type="expression">MIT</license>
+        
+
+        <!-- The icon is used in Visual Studio's package manager UI -->
+        <iconUrl>https://github.com/damienaicheh/MvvmCodeGenerator/master/Documentation/nuget_icon.png</iconUrl>
+
+        <!-- 
+            If true, this value prompts the user to accept the license when
+            installing the package. 
+        -->
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+        <!-- Any details about this particular release -->
+        <releaseNotes>Generate boilerplate code for MvvmLightLibs, MvvmCross, Mvvmicro and FreshMvvm.</releaseNotes>
+
+        <!-- 
+            The description can be used in package manager UI. Note that the
+            nuget.org gallery uses information you add in the portal. 
+        -->
+        <description>Save time by generating boilerplate code for different MVVM framework, this nuget support now: MvvmLightLibs, MvvmCross, Mvvmicro and FreshMvvm.</description>
+
+        <!-- Copyright information -->
+        <copyright>Copyright ©2019 Damien Aicheh</copyright>
+
+        <!-- Tags appear in the gallery and can be used for tag searches -->
+        <tags>mvvm generator xamarin dotnet command properties mvvmicro mvvmcross mvvmlightlibs freshmvvm mvvmcodegen</tags>
+        
+    </metadata>
+
+    <!-- A readme.txt to display when the package is installed -->
+    <files>
+       <!-- Include all files because it's a generator and Microsoft.CodeAnalysis needs all his dépendances to build correctly -->
+        <file src="..\Sources\MvvmCodeGenerator.Gen\bin\Release\netstandard2.0\*" target="build\netstandard2.0\" />
+    </files>
+</package>
