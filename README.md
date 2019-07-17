@@ -72,7 +72,6 @@ This xml will generate the 2 ViewModels with their **.g.cs** class associated:
 
 The `RootViewModel.cs`:
 ```csharp
-Folder destination ./MvvmCodeGenerator.Dev/ViewModel
 namespace MvvmCodeGenerator.Sample
 {
     using System;
