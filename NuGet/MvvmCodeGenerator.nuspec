@@ -5,7 +5,7 @@
         <id>MvvmCodeGenerator</id>
 
         <!-- The package version number that is used when resolving dependencies -->
-        <version>0.0.27-beta</version>
+        <version>0.0.28-beta</version>
 
         <!-- Authors contain text that appears directly on the gallery -->
         <authors>Damien Aicheh</authors>
@@ -24,13 +24,13 @@
         
 
         <!-- The icon is used in Visual Studio's package manager UI -->
-        <iconUrl>https://github.com/damienaicheh/MvvmCodeGenerator/master/Documentation/nuget_icon.png</iconUrl>
+        <iconUrl>https://github.com/damienaicheh/MvvmCodeGenerator/blob/master/Documentation/logo.png</iconUrl>
 
         <!-- 
             If true, this value prompts the user to accept the license when
             installing the package. 
         -->
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
 
         <!-- Any details about this particular release -->
         <releaseNotes>Generate boilerplate code for MvvmLightLibs, MvvmCross, Mvvmicro and FreshMvvm.</releaseNotes>

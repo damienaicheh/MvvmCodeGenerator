@@ -17,7 +17,7 @@ The advantages of using it are :
 
 ## Features
 
-This NuGet allows you to generate your ViewModels with the Properties and Commands specified in your xml file. The code generated will depend on the Mvvm Frameworks you like.
+This NuGet allows you to generate your ViewModels with the Properties and Commands specified in your XML file. The code generated will depend on the Mvvm Frameworks you like.
 
 This tool now support these MVVM Frameworks:
 
@@ -68,7 +68,7 @@ Let's define the ViewModels inside the `ViewModels` tags. You can define as many
 
 As you can see above, you can specify a list of ViewModels for a specific namespace and destination folder.
 
-This xml will generate the 2 ViewModels with their **.g.cs** class associated:
+This XML will generate the 2 ViewModels with their **.g.cs** class associated:
 
 The `RootViewModel.cs`:
 ```csharp
