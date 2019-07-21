@@ -405,4 +405,4 @@ ASALocalRun/
 .localhistory/
 
 # Generated code
-Sources/Xamarin.Sample/ViewModel
+Sources/Xamarin.Sample/ViewModel/
