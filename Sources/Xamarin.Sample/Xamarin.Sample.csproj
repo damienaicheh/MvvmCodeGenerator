@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Mvvmicro" Version="0.10.17" />
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
@@ -14,5 +12,4 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <Import Project=".\..\MvvmCodeGenerator.Gen\MvvmCodeGenerator.targets" />
-  <Import Project="MvvmCodeGenMapper.g.targets" />
 </Project>

@@ -1,14 +1,21 @@
 ﻿namespace MvvmCodeGenerator.Gen
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Xml.Linq;
+    using Microsoft.Build.Utilities;
 
     /// <summary>
     /// File helper class to manage the generation files.
     /// </summary>
     public static class FileHelper
     {
+        /// <summary>
+        /// Logger defined in the task.
+        /// </summary>
+        public static TaskLoggingHelper Log { private get; set; }
+
         /// <summary>
         /// Clean the specified files dependening on their extensions and their folder path.
         /// </summary>
@@ -22,7 +29,7 @@
                 {
                     if (file.EndsWith(extensions, StringComparison.Ordinal))
                     {
-                        Console.WriteLine($"Cleaning file: { file}");
+                        LogMessage($"Cleaning file: { file}");
                         File.Delete(file);
                     }
                 }
@@ -45,7 +52,7 @@
         public static void SaveFileContent(string outputFolder,string destinationFolder, string content, string fileName, string fileExtension, bool checkIfExist)
         {
             var folder = Path.Combine(outputFolder, destinationFolder);
-            Console.WriteLine($"Folder destination {folder}");
+            LogMessage($"Folder destination {folder}");
 
             var path = Path.Combine(folder, string.Concat(fileName, fileExtension));
 
@@ -62,7 +69,7 @@
             }
 
             // Output new interfaceCode to the build.
-            Console.WriteLine(content);
+            LogMessage(content);
         }
 
         /// <summary>
@@ -76,7 +83,7 @@
         public static void SaveFileContent(string outputFolder, string destinationFolder, XElement content, string fileName, string fileExtension)
         {
             var folder = Path.Combine(outputFolder, destinationFolder);
-            Console.WriteLine($"Folder destination {folder}");
+            LogMessage($"Folder destination {folder}");
 
             var path = Path.Combine(folder, string.Concat(fileName, fileExtension));
  
@@ -91,6 +98,19 @@
                     var text = reader.ReadToEnd();
                     Save(path, text);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Writes a message into the default logging system.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        [Conditional("DEBUG")]
+        private static void LogMessage(string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                Log?.LogMessage(message);
             }
         }
 
@@ -114,7 +134,7 @@
             }
 
             File.WriteAllText(path, content);
-            Console.WriteLine($"Save file {path}");
+            LogMessage($"Save file {path}");
         }
 
     }

@@ -2,8 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
+    using System.Text;
+    using System.Xml;
     using System.Xml.Linq;
+    using Microsoft.Build.Utilities;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,6 +17,16 @@
     /// </summary>
     public abstract class CSharpGenerator : IGenerator
     {
+        /// <summary>
+        /// Constant value for the name, wihtout extension, of the target generated file.
+        /// </summary>
+        private const string GeneratedTargetFileWithoutExtension = "MvvmCodeGenMapper";
+
+        /// <summary>
+        /// Constant value for the file extension of the target generated file.
+        /// </summary>
+        private const string GeneratedTargetFileExtension = ".g.targets";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:MvvmCodeGenerator.Gen.CSharpGenerator"/> class.
         /// Constructor base for all generators.
@@ -24,6 +38,11 @@
             this.ViewModels = viewModels;
             this.Arguments = arguments;
         }
+
+        /// <summary>
+        /// Logger defined in the task.
+        /// </summary>
+        public TaskLoggingHelper Log { private get; set; }
 
         /// <summary>
         /// Gets or sets The namespace declaration for the current generated class.
@@ -59,12 +78,18 @@
                 this.GenerateViewModelPartialFile(viewModel);
             }
 
-            this.GenerateTarget(ViewModels);
+            this.GenerateTarget(ViewModels, out string generatedTargetFilename);
+            this.InjectProject(generatedTargetFilename);
         }
 
         /// <summary>
         /// Clean previous files.
         /// </summary>
+        /// <remarks>
+        /// At this time, this method has no effect.<br/>
+        /// If the project has not previously built, or if it has been cleaned, there is no file to delete.<br/>
+        /// And the dedicated task to file generation is not run, due to the cached data state of the project.
+        /// </remarks>
         public void CleanGeneratedFiles()
         {
             FileHelper.Clean(this.Arguments.OutputFolderProject, "interface.g.cs");
@@ -88,6 +113,19 @@
         /// </summary>
         /// <returns>SyntaxNodeOrToken with the ViewModel base.</returns>
         protected abstract SyntaxNodeOrToken AddBaseViewModel();
+
+        /// <summary>
+        /// Writes a message into the default logging system.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        [Conditional("DEBUG")]
+        protected void LogMessage(string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                Log?.LogMessage(message);
+            }
+        }
 
         /// <summary>
         /// Create the default namespaces.
@@ -390,7 +428,7 @@
             return command.HasParameterType ? $"{type}<{command.ParameterType}>" : type;
         }
 
-        private void GenerateTarget(List<ViewModel> viewModels)
+        private void GenerateTarget(List<ViewModel> viewModels, out string generatedTargetFilename)
         {
             var xml = new XElement("Project");
 
@@ -423,7 +461,57 @@
 
             xml.Add(group);
             Console.WriteLine(xml);
-            FileHelper.SaveFileContent(this.Arguments.OutputFolderProject, string.Empty, xml, "MvvmCodeGenMapper", ".g.targets");
+            FileHelper.SaveFileContent(this.Arguments.OutputFolderProject, string.Empty, xml, GeneratedTargetFileWithoutExtension, GeneratedTargetFileExtension);
+            generatedTargetFilename = string.Concat(GeneratedTargetFileWithoutExtension, GeneratedTargetFileExtension);
+        }
+
+        /// <summary>
+        /// Inject the import of the generated project into the original project, if necessary.
+        /// </summary>
+        /// <param name="generatedTargetFilename">The name of the project to import.</param>
+        private void InjectProject(string generatedTargetFilename)
+        {
+            LogMessage($@"Generated target filename: ""{generatedTargetFilename}""");
+            if (!string.IsNullOrEmpty(generatedTargetFilename))
+            {
+                XmlDocument document = new XmlDocument();
+                var projectPath = Arguments.ProjectPath;
+                document.Load(projectPath);
+                var node = document.SelectSingleNode($"/Project/Import[@Project='{generatedTargetFilename}']");
+
+                LogMessage($"The generated project {(node == null ? "has not" : "has already")} been imported in the original project");
+                if (node == null)
+                {
+                    node = document.CreateElement("Import");
+                    var attribute = document.CreateAttribute("Project");
+                    attribute.Value = generatedTargetFilename;
+                    node.Attributes.Append(attribute);
+                    document.SelectSingleNode("/Project").AppendChild(node);
+
+                    XmlWriterSettings settings = new XmlWriterSettings
+                    {
+                        CheckCharacters = true,
+                        CloseOutput = true,
+                        Encoding = new UTF8Encoding(false),
+                        Indent = true,
+                        IndentChars = "  ",
+                        NewLineChars = "\r\n",
+                        NewLineHandling = NewLineHandling.None,
+                        NewLineOnAttributes = false,
+                        OmitXmlDeclaration = true
+                    };
+                    using (var stream = new FileStream(projectPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        var xmlWriter = XmlWriter.Create(stream, settings);
+                        using (xmlWriter)
+                        {
+                            LogMessage("Overwrite the original project");
+                            document.WriteContentTo(xmlWriter);
+                            xmlWriter.Flush();
+                        }
+                    }
+                }
+            }
         }
     }
 }
