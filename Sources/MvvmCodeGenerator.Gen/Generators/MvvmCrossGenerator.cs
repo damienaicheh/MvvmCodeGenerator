@@ -84,24 +84,5 @@
                        .WithModifiers(FormatterHelper.GenerateComment(property.Comment));
 
         }
-
-        /// <summary>
-        /// Get command method syntax, depending on the framework used.
-        /// </summary>
-        /// <param name="command">The command to generate.</param>
-        /// <returns>The ArgumentListSyntax that represent the command syntax to generate</returns>
-        protected override ArgumentListSyntax GetCommandMethodSyntax(Command command)
-        {
-            var syntaxeNodeOrToken = new List<SyntaxNodeOrToken>();
-            syntaxeNodeOrToken.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(string.Concat("Execute", command.FormatCommandName(), command.IsAsync ? "Async" : string.Empty))));
-
-            if (command.HasCanExecute)
-            {
-                syntaxeNodeOrToken.Add(SyntaxFactory.Token(SyntaxKind.CommaToken));
-                syntaxeNodeOrToken.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName("CanExecute" + command.FormatCommandName())));
-            }
-
-            return SyntaxFactory.ArgumentList(SyntaxFactory.SeparatedList<ArgumentSyntax>(syntaxeNodeOrToken));
-        }
     }
 }
