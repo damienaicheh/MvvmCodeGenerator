@@ -5,7 +5,7 @@
         <id>MvvmCodeGenerator</id>
 
         <!-- The package version number that is used when resolving dependencies -->
-        <version>0.0.28-beta</version>
+        <version>0.0.29-beta</version>
 
         <!-- Authors contain text that appears directly on the gallery -->
         <authors>Damien Aicheh</authors>
