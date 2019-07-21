@@ -1,9 +1,13 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    
+
     <UsingTask TaskName="MvvmCodeGenerator.Gen.MvvmCodeGeneratorTask" AssemblyFile="bin\$(Configuration)\netstandard2.0\MvvmCodeGenerator.Gen.dll"/>
     <!--Needed to generate the NuGet file : -->
     <!--    <UsingTask TaskName="MvvmCodeGenerator.Gen.MvvmCodeGeneratorTask"  AssemblyFile="MvvmCodeGenerator.Gen.dll"/>-->
-    
+
+    <UsingTask TaskName="MvvmCodeGenerator.Gen.MvvmCodeGeneratorCleanTask" AssemblyFile="bin\$(Configuration)\netstandard2.0\MvvmCodeGenerator.Gen.dll"/>
+    <!--Needed to generate the NuGet file : -->
+    <!--    <UsingTask TaskName="MvvmCodeGenerator.Gen.MvvmCodeGeneratorCleanTask"  AssemblyFile="MvvmCodeGenerator.Gen.dll"/>-->
+
     <Target Name="GeneratorTask" BeforeTargets="Build">
         <ItemGroup>
             <ResourceFile Include="MvvmCodeGenMapper.xml"/>
@@ -11,7 +15,19 @@
         <ItemGroup>
             <ResultFile Include="$([System.IO.Path]::GetFileName('%(ResourceFile.Identity)'))" />
         </ItemGroup>
-        
+
         <MvvmCodeGenerator.Gen.MvvmCodeGeneratorTask ProjectPath="$(ProjectPath)" SourceFile="@(ResultFile)"/>
     </Target>
+
+    <Target Name="CleanGeneratedTask" BeforeTargets="Clean">
+        <ItemGroup>
+            <ResourceFile Include="MvvmCodeGenMapper.xml"/>
+        </ItemGroup>
+        <ItemGroup>
+            <ResultFile Include="$([System.IO.Path]::GetFileName('%(ResourceFile.Identity)'))" />
+        </ItemGroup>
+
+        <MvvmCodeGenerator.Gen.MvvmCodeGeneratorCleanTask ProjectPath="$(ProjectPath)" SourceFile="@(ResultFile)"/>
+    </Target>
+
 </Project>

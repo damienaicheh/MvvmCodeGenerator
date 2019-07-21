@@ -500,7 +500,7 @@
                         var xmlWriter = XmlWriter.Create(stream, settings);
                         using (xmlWriter)
                         {
-                            LogMessage("Overwrite of the original project");
+                            LogMessage("Overwrite the original project");
                             document.WriteContentTo(xmlWriter);
                             xmlWriter.Flush();
                         }
