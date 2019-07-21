@@ -38,10 +38,11 @@
 
                 Arguments arguments = new Arguments
                 {
+                    ProjectPath = ProjectPath,
                     OutputFolderProject = projectFolder
                 };
 
-                Bootstrap.Start(path, arguments);
+                Bootstrap.Start(path, arguments, Log);
 
                 Log.LogMessage("End of generation.");
 

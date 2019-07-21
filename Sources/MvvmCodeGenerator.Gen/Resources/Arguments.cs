@@ -6,6 +6,12 @@
     public class Arguments
     {
         /// <summary>
+        /// Gets or sets the path to the project file.
+        /// </summary>
+        /// <value>The path to the project file.</value>
+        public string ProjectPath { get; set; }
+
+        /// <summary>
         /// Gets or sets the output folder project to generate the class.
         /// </summary>
         /// <value>The output folder project.</value>

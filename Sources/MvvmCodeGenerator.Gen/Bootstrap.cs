@@ -1,6 +1,7 @@
 ﻿namespace MvvmCodeGenerator.Gen
 {
     using System.IO;
+    using Microsoft.Build.Utilities;
 
     /// <summary>
     /// Bootstrap the generator. 
@@ -12,7 +13,8 @@
         /// </summary>
         /// <param name="filePath">The path to the Resource file.</param>
         /// <param name="arguments">The arguments from the project.</param>
-        public static void Start(string filePath, Arguments arguments)
+        /// <param name="logger">The default logging system.</param>
+        public static void Start(string filePath, Arguments arguments, TaskLoggingHelper logger)
         {
             var content = File.ReadAllText(filePath);
 
@@ -39,6 +41,7 @@
                         break;
                 }
 
+                gen.Log = logger;
                 gen.CleanGeneratedFiles();
                 gen.Generate();
             }
