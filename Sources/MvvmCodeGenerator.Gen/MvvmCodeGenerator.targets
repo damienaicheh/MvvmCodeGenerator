@@ -9,10 +9,10 @@
     <!--    <UsingTask TaskName="MvvmCodeGenerator.Gen.MvvmCodeGeneratorCleanTask"  AssemblyFile="MvvmCodeGenerator.Gen.dll"/>-->
 
     <Target Name="GeneratorTask" BeforeTargets="Build">
-        <ItemGroup>
+        <ItemGroup Condition=" '$(_CleanTaskRequired)' != 'true' ">
             <ResourceFile Include="MvvmCodeGenMapper.xml"/>
         </ItemGroup>
-        <ItemGroup>
+        <ItemGroup Condition=" '$(_CleanTaskRequired)' != 'true' ">
             <ResultFile Include="$([System.IO.Path]::GetFileName('%(ResourceFile.Identity)'))" />
         </ItemGroup>
 
@@ -20,6 +20,9 @@
     </Target>
 
     <Target Name="CleanGeneratedTask" BeforeTargets="Clean">
+        <PropertyGroup>
+            <_CleanTaskRequired>true</_CleanTaskRequired>
+        </PropertyGroup>
         <ItemGroup>
             <ResourceFile Include="MvvmCodeGenMapper.xml"/>
         </ItemGroup>
