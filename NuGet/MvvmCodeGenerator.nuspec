@@ -24,7 +24,7 @@
         
 
         <!-- The icon is used in Visual Studio's package manager UI -->
-        <iconUrl>https://github.com/damienaicheh/MvvmCodeGenerator/blob/master/Documentation/logo.png</iconUrl>
+        <iconUrl>https://raw.githubusercontent.com/damienaicheh/MvvmCodeGenerator/master/Documentation/logo.png</iconUrl>
 
         <!-- 
             If true, this value prompts the user to accept the license when
