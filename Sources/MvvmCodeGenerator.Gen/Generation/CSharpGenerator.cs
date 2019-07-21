@@ -85,6 +85,11 @@
         /// <summary>
         /// Clean previous files.
         /// </summary>
+        /// <remarks>
+        /// At this time, this method has no effect.<br/>
+        /// If the project has not previously built, or if it has been cleaned, there is no file to delete.<br/>
+        /// And the dedicated task to file generation is not run, due to the cached data state of the project.
+        /// </remarks>
         public void CleanGeneratedFiles()
         {
             FileHelper.Clean(this.Arguments.OutputFolderProject, "interface.g.cs");
