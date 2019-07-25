@@ -14,7 +14,7 @@
         /// <param name="filePath">The path to the Resource file.</param>
         /// <param name="arguments">The arguments from the project.</param>
         /// <param name="logger">The default logging system.</param>
-        public static void Start(string filePath, Arguments arguments, TaskLoggingHelper logger)
+        public static void Start(string filePath, Arguments arguments, TaskLoggingHelper logger = null)
         {
             var content = File.ReadAllText(filePath);
 

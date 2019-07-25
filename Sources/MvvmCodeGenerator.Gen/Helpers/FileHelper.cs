@@ -52,7 +52,6 @@
         public static void SaveFileContent(string outputFolder,string destinationFolder, string content, string fileName, string fileExtension, bool checkIfExist)
         {
             var folder = Path.Combine(outputFolder, destinationFolder);
-            LogMessage($"Folder destination {folder}");
 
             var path = Path.Combine(folder, string.Concat(fileName, fileExtension));
 
@@ -67,9 +66,6 @@
             {
                 Save(path, content);
             }
-
-            // Output new interfaceCode to the build.
-            LogMessage(content);
         }
 
         /// <summary>
@@ -83,7 +79,6 @@
         public static void SaveFileContent(string outputFolder, string destinationFolder, XElement content, string fileName, string fileExtension)
         {
             var folder = Path.Combine(outputFolder, destinationFolder);
-            LogMessage($"Folder destination {folder}");
 
             var path = Path.Combine(folder, string.Concat(fileName, fileExtension));
  
@@ -111,6 +106,7 @@
             if (!string.IsNullOrEmpty(message))
             {
                 Log?.LogMessage(message);
+                Console.WriteLine(message);
             }
         }
 
@@ -134,7 +130,10 @@
             }
 
             File.WriteAllText(path, content);
+
+            LogMessage($"Folder destination {folder}");
             LogMessage($"Save file {path}");
+            LogMessage(content);
         }
 
     }

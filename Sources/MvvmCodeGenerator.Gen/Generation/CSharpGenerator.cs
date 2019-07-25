@@ -460,7 +460,7 @@
             }
 
             xml.Add(group);
-            Console.WriteLine(xml);
+
             FileHelper.SaveFileContent(this.Arguments.OutputFolderProject, string.Empty, xml, GeneratedTargetFileWithoutExtension, GeneratedTargetFileExtension);
             generatedTargetFilename = string.Concat(GeneratedTargetFileWithoutExtension, GeneratedTargetFileExtension);
         }
@@ -469,6 +469,7 @@
         /// Inject the import of the generated project into the original project, if necessary.
         /// </summary>
         /// <param name="generatedTargetFilename">The name of the project to import.</param>
+        [Conditional("RELEASE")]
         private void InjectProject(string generatedTargetFilename)
         {
             LogMessage($@"Generated target filename: ""{generatedTargetFilename}""");
