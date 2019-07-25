@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Resources>
-    <Generator Value="freshMvvm" />
+    <Generator Value="mvvmlightlibs" />
     <ViewModels Namespace="MvvmCodeGenerator.Sample" DestinationFolder="ViewModel">
         <ViewModel Key="Root">
           <Property Name="IsNew" Type="bool" Description="A test" />

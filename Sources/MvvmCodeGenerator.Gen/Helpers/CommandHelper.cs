@@ -21,7 +21,7 @@
 
             if (command.IsAsync)
             {
-                var methodExpression = SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName(string.Concat("Execute", command.FormatCommandName(), "Async")));
+                var methodExpression = SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName(command.FormatExecuteCommandName()));
 
                 if (command.HasParameterType)
                 {
@@ -39,11 +39,23 @@
                                             .WithBlock(SyntaxFactory.Block(
                                                 SyntaxFactory.SingletonList<StatementSyntax>(SyntaxFactory.ExpressionStatement(SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName(command.FormatCommandExceptionName()))
                                             .WithArgumentList(SyntaxFactory.ArgumentList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Argument(SyntaxFactory.IdentifierName("ex")))))))))))
+                                            .WithFinally(SyntaxFactory.FinallyClause(SyntaxFactory.Block(
+                                                SyntaxFactory.SingletonList<StatementSyntax>(
+                                                    SyntaxFactory.ExpressionStatement(SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression,
+                                                            SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, SyntaxFactory.ThisExpression(), SyntaxFactory.IdentifierName(command.FormatPropertyIsCommandRunning())),
+                                                            SyntaxFactory.LiteralExpression(SyntaxKind.FalseLiteralExpression)))))))
                                     .WithBlock(
                                         SyntaxFactory.Block(
-                                            SyntaxFactory.SingletonList<StatementSyntax>(
-                                                SyntaxFactory.ExpressionStatement(
-                                                    SyntaxFactory.AwaitExpression(methodExpression)))))))).WithAsyncKeyword(SyntaxFactory.Token(SyntaxKind.AsyncKeyword));
+                                            SyntaxFactory.ExpressionStatement(
+                                                 SyntaxFactory.AssignmentExpression(
+                                                    SyntaxKind.SimpleAssignmentExpression,
+                                                    SyntaxFactory.MemberAccessExpression(
+                                                        SyntaxKind.SimpleMemberAccessExpression,
+                                                        SyntaxFactory.ThisExpression(),
+                                                        SyntaxFactory.IdentifierName(command.FormatPropertyIsCommandRunning())),
+                                                    SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression))),
+                                            SyntaxFactory.ExpressionStatement(SyntaxFactory.AwaitExpression(methodExpression))
+                                            ))))).WithAsyncKeyword(SyntaxFactory.Token(SyntaxKind.AsyncKeyword));
 
                 if (command.HasParameterType)
                 {
@@ -54,18 +66,18 @@
             }
             else
             {
-                syntaxeNodeOrToken.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(string.Concat("Execute", command.FormatCommandName()))));
+                syntaxeNodeOrToken.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(command.FormatExecuteCommandName())));
             }
 
             if (command.HasCanExecute)
             {
                 syntaxeNodeOrToken.Add(SyntaxFactory.Token(SyntaxKind.CommaToken));
-                syntaxeNodeOrToken.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName("CanExecute" + command.FormatCommandName())));
+                syntaxeNodeOrToken.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(command.FormatCanExecuteCommandName())));
             }
 
             return SyntaxFactory.ArgumentList(SyntaxFactory.SeparatedList<ArgumentSyntax>(syntaxeNodeOrToken));
         }
-    
+
         /// <summary>
         /// Add the command exception comment.
         /// </summary>

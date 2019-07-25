@@ -45,6 +45,11 @@
         public TaskLoggingHelper Log { private get; set; }
 
         /// <summary>
+        /// Define if the generator needs to have a IsRunning property for async commands.
+        /// </summary>
+        protected bool IsRunningPropertyForCommandNeeded { private get; set; }
+
+        /// <summary>
         /// Gets or sets The namespace declaration for the current generated class.
         /// </summary>
         /// <value>The namespace declaration.</value>
@@ -151,8 +156,10 @@
         /// <returns>The ArgumentListSyntax that represent the command syntax to generate</returns>
         protected virtual ArgumentListSyntax GetCommandMethodSyntax(Command command)
         {
-            var syntaxeNodeOrToken = new List<SyntaxNodeOrToken>();
-            syntaxeNodeOrToken.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(command.FormatExecuteCommandName())));
+            var syntaxeNodeOrToken = new List<SyntaxNodeOrToken>
+            {
+                SyntaxFactory.Argument(SyntaxFactory.IdentifierName(command.FormatExecuteCommandName()))
+            };
 
             if (command.HasCanExecute)
             {
@@ -277,6 +284,16 @@
             {
                 foreach (var command in viewModel.Commands)
                 {
+                    // This is voluntary done in two separate loops to keep the public and private properties at the top of the file.
+                    if (this.IsRunningPropertyForCommandNeeded && command.IsAsync)
+                    {
+                        privateFields.Add(this.CreatePrivateVariable(typeof(bool).ToString(), command.FormatPropertyIsCommandRunning()));
+                        publicProperties.Add(this.CreatePublicProperties(new Property(command.FormatPropertyIsCommandRunning(), typeof(bool).ToString(), "Gets or sets the value to know if the associated async command is running.", true, true)));
+                    }
+                }
+
+                foreach (var command in viewModel.Commands)
+                {
                     var type = this.GetCommandType(command);
                     privateFields.Add(this.CreatePrivateVariable(type, command.FormatCommandName()));
                     publicProperties.Add(this.CreateCommandProperty(command));
@@ -306,22 +323,20 @@
             // Create and add all properties to the interface.
             foreach (var property in viewModel.Properties)
             {
-                var field = this.CreatePublicProperty(property.Type.FindType(), property.Name)
-                         .WithAccessorList(SyntaxFactory.AccessorList(
-                            SyntaxFactory.SingletonList(SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                                         .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)))));
-
+                var field = this.CreatePublicProperty(property.Type.FindType(), property.Name);
                 this.InterfaceDeclaration = this.InterfaceDeclaration.AddMembers(field);
             }
 
             // Create and add all commands to the interface.
             foreach (var command in viewModel.Commands)
             {
-                var field = this.CreatePublicProperty(typeof(System.Windows.Input.ICommand).ToString(), command.FormatCommandName())
-                          .WithAccessorList(SyntaxFactory.AccessorList(
-                             SyntaxFactory.SingletonList(SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                                          .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)))));
+                if (this.IsRunningPropertyForCommandNeeded && command.IsAsync)
+                {
+                    var commandField = this.CreatePublicProperty(typeof(bool).ToString(), command.FormatPropertyIsCommandRunning());
+                    this.InterfaceDeclaration = this.InterfaceDeclaration.AddMembers(commandField);
+                }
 
+                var field = this.CreatePublicProperty(typeof(System.Windows.Input.ICommand).ToString(), command.FormatCommandName());
                 this.InterfaceDeclaration = this.InterfaceDeclaration.AddMembers(field);
             }
         }
@@ -381,7 +396,10 @@
         }
 
         private PropertyDeclarationSyntax CreatePublicProperty(string type, string name) =>
-            SyntaxFactory.PropertyDeclaration(SyntaxFactory.IdentifierName(type), SyntaxFactory.Identifier(name));
+            SyntaxFactory.PropertyDeclaration(SyntaxFactory.IdentifierName(type), SyntaxFactory.Identifier(name))
+                    .WithAccessorList(SyntaxFactory.AccessorList(
+                        SyntaxFactory.SingletonList(SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                                    .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)))));
 
         private VariableDeclarationSyntax CreatePrivateVariable(string type, string name) =>
             SyntaxFactory.VariableDeclaration(SyntaxFactory.ParseTypeName(type)).AddVariables(SyntaxFactory.VariableDeclarator(name.ToCamelCase()));

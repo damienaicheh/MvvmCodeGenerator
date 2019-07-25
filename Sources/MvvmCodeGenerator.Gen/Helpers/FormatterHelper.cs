@@ -98,6 +98,13 @@
         public static string FormatCommandExceptionName(this Command command) => string.Concat("OnExecute", command.FormatCommandName(), "AsyncError");
 
         /// <summary>
+        /// Formats the name of the property when the command is running.
+        /// </summary>
+        /// <returns>The property name when the command is running.</returns>
+        /// <param name="command">The command.</param>
+        public static string FormatPropertyIsCommandRunning(this Command command) => string.Concat("Is", command.FormatCommandName(), "Running");
+
+        /// <summary>
         /// Generate warning message on top of all the files.
         /// </summary>
         /// <returns>The generated warning comment.</returns>

@@ -17,6 +17,7 @@
         /// <param name="arguments">The build arguments.</param>
         public MvvmLightLibsGenerator(List<ViewModel> viewModels, Arguments arguments) : base(viewModels, arguments)
         {
+            this.IsRunningPropertyForCommandNeeded = true;
         }
 
         /// <summary>
