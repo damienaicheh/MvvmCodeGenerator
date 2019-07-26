@@ -1,6 +1,5 @@
 ﻿namespace MvvmCodeGenerator.Gen
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
