@@ -54,16 +54,20 @@ Choose the one you like and declare it inside your `MvvmCodeGenMapper.xml` like 
 Let's define the ViewModels inside the `ViewModels` tags. You can define as many `ViewModels` tags as needed. Here is an example:
 
 ```xml
-<ViewModels Namespace="MvvmCodeGenerator.Sample" DestinationFolder="ViewModel">
-    <ViewModel Key="Root">
-          <Property Name="IsLoading" Type="bool" Description="Gets or sets the loader property." />
-    </ViewModel>
-    <ViewModel Key="Dashboard"  Base="Root">
-        <Property Name="Title" Type="string" Description="Gets or sets the title." />
-        <Command Name="Buy" Description="Gets or sets the command to buy a boat" />
-        <AsyncCommand Name="Consultation" Parameter="string" CanExecute="true" Description="Gets or sets the command to consult my orders" />
-    </ViewModel> 
-</ViewModels>       
+<?xml version="1.0" encoding="UTF-8" ?>
+<Resources>
+    <Generator Value="mvvmlightlibs" />
+    <ViewModels Namespace="MvvmCodeGenerator.Sample" DestinationFolder="ViewModel">
+        <ViewModel Key="Root">
+              <Property Name="IsLoading" Type="bool" Description="Gets or sets the loader property." />
+        </ViewModel>
+        <ViewModel Key="Dashboard"  Base="Root">
+            <Property Name="Title" Type="string" Description="Gets or sets the title." />
+            <Command Name="Buy" Description="Gets or sets the command to buy a boat" />
+            <AsyncCommand Name="Consultation" Parameter="string" CanExecute="true" Description="Gets or sets the command to consult my orders" />
+        </ViewModel> 
+    </ViewModels>   
+</Resources>    
 ```
 
 As you can see above, you can specify a list of ViewModels for a specific namespace and destination folder.
@@ -198,6 +202,11 @@ namespace MvvmCodeGenerator.Sample
             get;
         }
 
+        System.Boolean IsConsultationCommandRunning
+        {
+            get;
+        }
+
         System.Windows.Input.ICommand ConsultationCommand
         {
             get;
@@ -228,6 +237,7 @@ namespace MvvmCodeGenerator.Sample
     public partial class DashboardViewModel : MvvmCodeGenerator.Sample.RootViewModel, MvvmCodeGenerator.Sample.IDashboardViewModel
     {
         private System.String title;
+        private System.Boolean isConsultationCommandRunning;
         private GalaSoft.MvvmLight.Command.RelayCommand buyCommand;
         private GalaSoft.MvvmLight.Command.RelayCommand<string> consultationCommand;
         /// <summary>
@@ -237,6 +247,15 @@ namespace MvvmCodeGenerator.Sample
         {
             get => this.title;
             set => this.Set(ref this.title, value);
+        }
+
+        /// <summary>
+        // Gets or sets the value to know if the associated async command is running.
+        /// </summary>
+        public System.Boolean IsConsultationCommandRunning
+        {
+            get => this.isConsultationCommandRunning;
+            set => this.Set(ref this.isConsultationCommandRunning, value);
         }
 
         /// <summary>
@@ -256,11 +275,16 @@ namespace MvvmCodeGenerator.Sample
             {
                 try
                 {
+                    this.IsConsultationCommandRunning = true;
                     await ExecuteConsultationCommandAsync(value);
                 }
                 catch (System.Exception ex)
                 {
                     OnExecuteConsultationCommandAsyncError(ex);
+                }
+                finally
+                {
+                    this.IsConsultationCommandRunning = false;
                 }
             }
 
@@ -272,12 +296,16 @@ namespace MvvmCodeGenerator.Sample
 
 Now you juste have to implement the commands in each *ViewModel.cs* file.
 
+A *IsRunning* property is added in the case of **MvvmLightLibs** and **FreshMvvm** async commands for you. **MvvmCross** and **Mvvmicro** already have this kind of mechanism.
+
+### Define your ViewModels and ItemViewModels
+
 Each `ViewModel` tag has different properties :
 
 * **Key** : The ViewModel name prefix
 * **Base** : The ViewModel name prefix of the parent class
 
-If you want to generate an ItemViewModel for each items of a listview for example. To generate it, just use the `ÌtemViewModel` instead of the `ViewModel` tag. You will have the same properties than the `ViewModel` tag available.
+If you want to generate an ItemViewModel for each items of a listview for example, just use the `ItemViewModel` tag instead of `ViewModel`. You will have the same properties than the `ViewModel` tag available.
 
 You can specify the **Properties** and **Commands** for each ViewModels:
 
