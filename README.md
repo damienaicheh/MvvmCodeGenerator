@@ -26,6 +26,16 @@ This tool now support these MVVM Frameworks:
 * [Mvvmicro](https://www.nuget.org/packages/Mvvmicro/)
 * [FreshMvvm](https://www.nuget.org/packages/FreshMvvm/)
 
+
+## Tutorial
+
+You will find a complete tutorial here:
+##### English version :
+[https://damienaicheh.github.io/nuget/xamarin/xamarin.forms/dotnet/2019/07/31/a-complete-overview-of-mvvmcodegenerator-en](https://damienaicheh.github.io/nuget/xamarin/xamarin.forms/dotnet/2019/07/31/a-complete-overview-of-mvvmcodegenerator-en)
+
+##### French version :
+[https://damienaicheh.github.io/nuget/xamarin/xamarin.forms/dotnet/2019/07/31/a-complete-overview-of-mvvmcodegenerator-fr](https://damienaicheh.github.io/nuget/xamarin/xamarin.forms/dotnet/2019/07/31/a-complete-overview-of-mvvmcodegenerator-fr)
+
 ## Usage
 ### Setup
 
