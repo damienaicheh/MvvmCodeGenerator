@@ -25,7 +25,7 @@ This tool now support these MVVM Frameworks:
 * [MvvmCross](https://www.nuget.org/packages/MvvmCross/)
 * [Mvvmicro](https://www.nuget.org/packages/Mvvmicro/)
 * [FreshMvvm](https://www.nuget.org/packages/FreshMvvm/)
-
+* [Prism.Core](https://www.nuget.org/packages/Prism.Core/)
 
 ## Tutorial
 
@@ -49,6 +49,7 @@ Now it's time to define which generator we want to use, 4 options are available:
 * mvvmcross
 * mvvmicro
 * freshmvvm
+* prismcore
 
 Choose the one you like and declare it inside your `MvvmCodeGenMapper.xml` like this:
 
