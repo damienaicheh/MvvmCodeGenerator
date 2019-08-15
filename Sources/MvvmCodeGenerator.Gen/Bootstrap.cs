@@ -39,6 +39,9 @@
                     case "freshmvvm":
                         gen = new FreshMvvmGenerator(resourceFile.ViewModels, arguments);
                         break;
+                    case "prismcore":
+                        gen = new PrismCoreGenerator(resourceFile.ViewModels, arguments);
+                        break;
                 }
 
                 gen.Log = logger;
