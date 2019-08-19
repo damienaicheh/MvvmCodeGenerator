@@ -97,6 +97,22 @@
         }
 
         /// <summary>
+        /// Reset the target file generated to re-import all ViewModels.
+        /// </summary>
+        public static void ResetTarget(string outputFolderProject, string generatedTargetFileWithoutExtension, string generatedTargetFileExtension)
+        {
+            var xml = new XElement("Project");
+
+            xml.Add(new XComment("This file has been generated with MvvmCodeGenerator, do not modify it."));
+
+            var group = new XElement("ItemGroup");
+            xml.Add(group);
+
+            SaveFileContent(outputFolderProject, string.Empty, xml, generatedTargetFileWithoutExtension, generatedTargetFileExtension);
+            string.Concat(generatedTargetFileWithoutExtension, generatedTargetFileExtension);
+        }
+
+        /// <summary>
         /// Writes a message into the default logging system.
         /// </summary>
         /// <param name="message">The message to log.</param>

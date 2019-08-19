@@ -17,16 +17,6 @@
     public abstract class CSharpGenerator : IGenerator
     {
         /// <summary>
-        /// Constant value for the name, wihtout extension, of the target generated file.
-        /// </summary>
-        private const string GeneratedTargetFileWithoutExtension = "MvvmCodeGenMapper";
-
-        /// <summary>
-        /// Constant value for the file extension of the target generated file.
-        /// </summary>
-        private const string GeneratedTargetFileExtension = ".g.targets";
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="T:MvvmCodeGenerator.Gen.CSharpGenerator"/> class.
         /// Constructor base for all generators.
         /// </summary>
@@ -98,8 +88,10 @@
         /// </remarks>
         public void CleanGeneratedFiles()
         {
+            // Becarefull the cleanTask do the same thing.
+            FileHelper.ResetTarget(this.Arguments.OutputFolderProject, Constants.GeneratedTargetFileWithoutExtension, Constants.GeneratedTargetFileExtension);
             FileHelper.Clean(this.Arguments.OutputFolderProject, "interface.g.cs");
-            FileHelper.Clean(this.Arguments.OutputFolderProject, "part.g.cs");
+            FileHelper.Clean(this.Arguments.OutputFolderProject, "part.g.cs");            
         }
 
         /// <summary>
@@ -452,7 +444,7 @@
             var xml = new XElement("Project");
 
             xml.Add(new XComment("This file has been generated with MvvmCodeGenerator, do not modify it."));
-
+            
             var group = new XElement("ItemGroup");
 
             foreach (var viewModel in viewModels)
@@ -480,8 +472,8 @@
 
             xml.Add(group);
 
-            FileHelper.SaveFileContent(this.Arguments.OutputFolderProject, string.Empty, xml, GeneratedTargetFileWithoutExtension, GeneratedTargetFileExtension);
-            generatedTargetFilename = string.Concat(GeneratedTargetFileWithoutExtension, GeneratedTargetFileExtension);
+            FileHelper.SaveFileContent(this.Arguments.OutputFolderProject, string.Empty, xml, Constants.GeneratedTargetFileWithoutExtension, Constants.GeneratedTargetFileExtension);
+            generatedTargetFilename = string.Concat(Constants.GeneratedTargetFileWithoutExtension, Constants.GeneratedTargetFileExtension);
         }
 
         /// <summary>
