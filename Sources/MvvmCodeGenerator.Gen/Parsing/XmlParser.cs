@@ -61,7 +61,7 @@
 
                 if (node.HasChildNodes)
                 {
-                    foreach (XmlNode child in node.ChildNodes)
+                    foreach (XmlNode child in node.ChildNodes.Cast<XmlNode>().Where(n => n.NodeType == XmlNodeType.Element))
                     {
                         var name = child.Attributes["Name"]?.Value;
                         var comment = child.Attributes["Description"]?.Value;
