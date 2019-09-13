@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 ## 1.1.3 - 2019-08-19
 ### Added
 - You can now comment lines in your `MvvmCodeGenMapper.xml`
+
+### Fixed
+- GeneratorTask task was executed after CoreCompile task instead of before CoreCompile.
   
 ## 1.1.2 - 2019-08-19
 ### Added
