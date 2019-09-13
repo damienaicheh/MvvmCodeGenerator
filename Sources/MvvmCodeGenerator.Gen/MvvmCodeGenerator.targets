@@ -8,7 +8,7 @@
     <!--Needed to generate the NuGet file : -->
     <!--    <UsingTask TaskName="MvvmCodeGenerator.Gen.MvvmCodeGeneratorCleanTask"  AssemblyFile="MvvmCodeGenerator.Gen.dll"/>-->
 
-    <Target Name="GeneratorTask" BeforeTargets="Build">
+    <Target Name="GeneratorTask" BeforeTargets="BeforeBuild">
         <ItemGroup Condition=" '$(_CleanTaskRequired)' != 'true' ">
             <ResourceFile Include="MvvmCodeGenMapper.xml"/>
         </ItemGroup>
